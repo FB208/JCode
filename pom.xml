@@ -58,6 +58,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.19</version>
         </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc4</artifactId>
+            <version>4.0</version>
+        </dependency>
         <!--用于动态连接-->
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -87,7 +92,7 @@
             <optional>true</optional>
             <scope>true</scope>
         </dependency>
-<!--整合freemarker-->
+        <!--整合freemarker-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>

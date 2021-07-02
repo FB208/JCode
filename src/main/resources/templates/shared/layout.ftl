@@ -30,8 +30,8 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                        aria-haspopup="true" aria-expanded="false">代码生成 <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">MySql</a></li>
-                                        <li><a href="#">SqlServer</a></li>
+                                        <li><a href="/db/mysql">MySql</a></li>
+                                        <li><a href="/db/mssql">SqlServer</a></li>
                                     </ul>
                                 </li>
                             </ul>

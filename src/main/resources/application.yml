@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: jcode
+#  mvc:
+#    static-path-pattern: /res/**
   datasource:
     name: dmdb
     type: com.alibaba.druid.pool.DruidDataSource
