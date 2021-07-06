@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 8887
 
 spring:
   application:
@@ -40,4 +40,8 @@ spring:
 #mybatis:
 #  #mapperLocations: classpath:mapper/*.xml
 #  type-aliase-package: com.haiot.springboot.entities
+
+jcode:
+  filepath:
+    resources: D:\CodeSpace\JCode\src\main\resources
 

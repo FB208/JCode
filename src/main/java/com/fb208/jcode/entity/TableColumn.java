@@ -17,5 +17,5 @@ public class TableColumn {
     String CanBeNull;
     String DefaultValue;
     String Remark;
-
 }
+

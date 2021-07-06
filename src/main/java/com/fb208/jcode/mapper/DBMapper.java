@@ -9,15 +9,23 @@ import java.util.List;
 
 @Service
 public class DBMapper {
-
+    public String selectDbName(){
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT Name FROM Master..SysDatabases ORDER BY Name");
+        return sql.toString();
+    }
     public String selectTableName() {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM SYSOBJECTS WHERE TYPE='U' ORDER BY name");
         return sql.toString();
     }
+    public String selectTableName(String dbName) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("USE "+dbName+";SELECT * FROM SYSOBJECTS WHERE TYPE='U' ORDER BY name;");
+        return sql.toString();
+    }
 
-
-    public String selectTableColumn(String tableName) {
+    public String selectTableColumn(String dbName,String tableName) {
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT cast(d.name as varchar(100)) TableName, " +
                 " cast(a.colorder as varchar(100)) ShowIndex,cast(a.name as varchar(100)) ColumnName, " +

@@ -1,99 +1,80 @@
 package com.fb208.jcode.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fb208.jcode.db.DbHelper;
+import com.fb208.jcode.entity.User;
 import com.fb208.jcode.mapper.DBMapper;
-import com.fb208.jcode.util.DbTypeTool;
-import com.fb208.jcode.util.NameTool;
+import com.fb208.jcode.util.*;
+import com.fb208.jcode.vm.Option;
+import com.fb208.jcode.vm.localJsondb.ConnectionString;
+
 import com.fb208.jcode.vm.test;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/db")
 @Slf4j
 public class DbController {
-
+    @Value("${jcode.filepath.resources}")
+    String resourcePath;
     @Autowired
     DBMapper dbMapper;
 
-    @GetMapping(value="/connMng")
+    @GetMapping(value = "/connMng")
     public String connectionStringManager(ModelMap map) {
 
         return "index";
     }
 
-    @GetMapping(value="/mssql")
+    @GetMapping(value = "/mssql")
     public String mssql(ModelMap map) {
-        String url="jdbc:sqlserver://39.98.138.165:1433;databasename=dmcloud_OAuth";
-        String driver="com.microsoft.sqlserver.jdbc.SQLServerDriver";
-        String userName = "sa";
-        String pwd = "Yang123!@#";
+        String path=resourcePath +"\\localJsondb\\connectionString.json";
+        String jsonStr = JsonFileTool.getDatafromFile(path);
+        ConnectionString connModel = JSON.parseObject(jsonStr,ConnectionString.class);
+        map.addAttribute("connList", connModel.getMssql());
+
+        List<ConnectionString.DbItem> dblist = connModel.getMssql();
+        ConnectionString.DbItem defaultDb= dblist.stream().filter(m->m.getIsUse()).findFirst().get();
+
+        String url = defaultDb.getUrl();
+        String driver = defaultDb.getDriver();
+        String userName = defaultDb.getUserName();
+        String pwd = defaultDb.getPassword();
         HikariDataSource dataSource = null;
         JdbcTemplate jdbcTemplate;
         try {
-            dataSource = new DbHelper().customDataSource(url,driver,userName,pwd);
+            dataSource = new DbHelper().customDataSource(url, driver, userName, pwd);
             jdbcTemplate = new JdbcTemplate(dataSource);
 
-            List<Map<String,Object>> list = jdbcTemplate.queryForList(dbMapper.selectTableName());
+            List<Map<String, Object>> list = jdbcTemplate.queryForList(dbMapper.selectTableName());
             List<String> tableNameList = new ArrayList<>();
-            list.forEach(item->{
+            list.forEach(item -> {
                 tableNameList.add(item.get("name").toString());
             });
-            map.addAttribute("tableNameList",tableNameList);
+            map.addAttribute("tableNameList", tableNameList);
             int a = 1;
         } catch (Exception e) {
 
-        }
-        finally {
+        } finally {
             dataSource.close();
         }
 
         return "/db/mssql/index";
     }
 
-    @PostMapping(value = "/mssql/doEntity")
-    @ResponseBody
-    public String mssqlDoEntity(String tableName){
-        String url="jdbc:sqlserver://39.98.138.165:1433;databasename=dmcloud_OAuth";
-        String driver="com.microsoft.sqlserver.jdbc.SQLServerDriver";
-        String userName = "sa";
-        String pwd = "Yang123!@#";
-        HikariDataSource dataSource = null;
-        JdbcTemplate jdbcTemplate;
-        StringBuilder vue = new StringBuilder();
-        try {
-            dataSource = new DbHelper().customDataSource(url,driver,userName,pwd);
-            jdbcTemplate = new JdbcTemplate(dataSource);
-
-            List<Map<String,Object>> list = jdbcTemplate.queryForList(dbMapper.selectTableColumn(tableName));
-
-            vue.append(" @Data \n")
-                    .append(" public class "+tableName+" \n")
-                    .append(" { \n");
-            list.forEach(item->{
-                vue.append(DbTypeTool.dbtypeTojavaType(item.get("Type").toString())).append(" ").append(item.get("ColumnName")).append(";").append("\n");
-            });
-            vue.append(" } \n");
-            int a = 1;
-        } catch (Exception e) {
-
-        }
-        finally {
-            dataSource.close();
-        }
-        return  vue.toString();
-    }
 
 }

@@ -1,0 +1,40 @@
+{
+  "mssql": [
+    {
+      "ServerName": "dev_master",
+      "ServerType": "Microsoft SQL Server",
+      "Url": "jdbc:sqlserver://39.98.138.165:1433;databasename=master",
+      "Driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+      "UserName": "sa",
+      "Password": "Yang123!@#",
+      "IsUse": true
+    },
+    {
+      "ServerName": "dev_dmcloud_OAuth",
+      "ServerType": "Microsoft SQL Server",
+      "Url": "jdbc:sqlserver://39.98.138.165:1433;databasename=dmcloud_OAuth",
+      "Driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+      "UserName": "sa",
+      "Password": "Yang123!@#",
+      "IsUse": false
+    },
+    {
+      "ServerName": "dev_dmcloud_Device",
+      "ServerType": "Microsoft SQL Server",
+      "Url": "jdbc:sqlserver://39.98.138.165:1433;databasename=dmcloud_Device",
+      "Driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+      "UserName": "sa",
+      "Password": "Yang123!@#",
+      "IsUse": false
+    },
+    {
+      "ServerName": "dev_dmcloud_Common",
+      "ServerType": "Microsoft SQL Server",
+      "Url": "jdbc:sqlserver://39.98.138.165:1433;databasename=dmcloud_Common",
+      "Driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+      "UserName": "sa",
+      "Password": "Yang123!@#",
+      "IsUse": false
+    }
+  ]
+}

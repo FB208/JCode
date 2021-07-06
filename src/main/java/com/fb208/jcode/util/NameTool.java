@@ -1,5 +1,8 @@
 package com.fb208.jcode.util;
 
+
+import org.apache.commons.lang.StringUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,5 +40,42 @@ public class NameTool {
         matcher.appendTail(sb);
         return sb.toString();
     }
+
+    /**
+     * 首字母转大写
+     * @param str
+     * @return
+     */
+    public static String firstCharToUpperCase(String str) {
+        if (StringUtils.isBlank(str)){
+            return str;
+        }
+        char[]chars = str.toCharArray();
+        if ( chars[0] >= 'a' && chars[0] <= 'z'){
+            chars[0] -= 32;
+            return String.valueOf(chars);
+        }else {
+            return str;
+        }
+    }
+
+    /**
+     * 首字母转小写
+     * @param str
+     * @return
+     */
+    public static String firstCharToLowerCase(String str) {
+        if (StringUtils.isBlank(str)){
+            return str;
+        }
+        char[]chars = str.toCharArray();
+        if ( chars[0] >= 'A' && chars[0] <= 'Z') {
+            chars[0] += 32;
+            return String.valueOf(chars);
+        }else {
+            return str;
+        }
+    }
+
 
 }
