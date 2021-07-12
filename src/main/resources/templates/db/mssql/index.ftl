@@ -55,12 +55,19 @@
                 </h4>
             </div>
             <div id="collapseTwo" class="panel-collapse collapse">
-                <input id="ipt_tableName" list="slt_tableName" class="form-control form-group" />
-                <datalist  id="slt_tableName">
-                    <#list tableNameList as tableName>
-                        <option value="${tableName}">${tableName}</option>
-                    </#list>
-                </datalist>
+                <div class="form-group">
+                    <label for="ipt_namespace">命名空间</label>
+                    <input id="ipt_namespace" class="form-control form-group" placeholder="com.haiot.jcode"/>
+                </div>
+                <div class="form-group">
+                    <label for="ipt_tableName">表</label>
+                    <input id="ipt_tableName" list="slt_tableName" class="form-control form-group" />
+                    <datalist  id="slt_tableName">
+                        <#list tableNameList as tableName>
+                            <option value="${tableName}">${tableName}</option>
+                        </#list>
+                    </datalist>
+                </div>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" id="cb_isSqlProvider" checked> 生成SqlProvider
@@ -111,6 +118,10 @@
                     <li>为适应旧版fas优化了数据类型</li>
                     <li>增加了必要的import，如entity和constant，批量生成不再需要挨个添加，目前仅支持com.haiot.fas包，未开发自定义包功能</li>
                 </ul>
+                <h4>2021.7.12</h4>
+                <ul>
+                    <li>现在可以自定义namespace</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -124,7 +135,8 @@
             },
             "data": JSON.stringify({
                 "isSqlProvider": "true",
-                "errorSkip":"false"
+                "errorSkip":"false",
+                "namespace":""
             }),
         };
         $(function(){
@@ -134,7 +146,8 @@
         function initOption(){
             var option = {
                 isSqlProvider:$("#cb_isSqlProvider").prop("checked"),
-                errorSkip:$("#cb_errorSkip").prop("checked")
+                errorSkip:$("#cb_errorSkip").prop("checked"),
+                namespace:$("#ipt_namespace").val()
             }
             return option;
         }

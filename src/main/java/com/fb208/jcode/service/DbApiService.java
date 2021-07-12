@@ -58,8 +58,8 @@ public class DbApiService {
         }
         result.append("import org.apache.ibatis.annotations.*; \n").append("\n");
         result.append("import java.util.List; \n").append("\n");
-        result.append("import com.haiot.fas.entity."+tableName+"; \n").append("\n");//namespace
-        result.append("import com.haiot.fas.mapper.sqlProvider."+tableName+"MapperSqlProvider; \n").append("\n");//namespace
+        result.append("import "+option.getNamespace()+".entity."+tableName+"; \n").append("\n");
+        result.append("import "+option.getNamespace()+".mapper.sqlProvider."+tableName+"MapperSqlProvider; \n").append("\n");
         result.append(" @Mapper \n").append(" public interface " + tableName + "Mapper ").append(" { \n");
         //所有字段
         String columns = list.stream().map(m->m.get("ColumnName")).map(String::valueOf).collect(Collectors.joining(","));
@@ -143,8 +143,8 @@ public class DbApiService {
             sqlProvider.append("import cn.hutool.core.util.StrUtil;").append("\n");
             sqlProvider.append("import org.apache.ibatis.annotations.Param;").append("\n");
             sqlProvider.append("import org.apache.ibatis.jdbc.SQL;").append("\n");
-            sqlProvider.append("import com.haiot.fas.constant.CommonConstant;").append("\n");//namespace
-            sqlProvider.append("import com.haiot.fas.entity."+tableName+";").append("\n");//namespace
+            sqlProvider.append("import "+option.getNamespace()+".CommonConstant;").append("\n");
+            sqlProvider.append("import "+option.getNamespace()+".entity."+tableName+";").append("\n");
             sqlProvider.append("public class "+tableName+"MapperSqlProvider {").append("\n");
             sqlProvider.append("    ").append("public String selectQuery(@Param(\""+NameTool.firstCharToLowerCase(tableName)+"\") "+tableName+" "+NameTool.firstCharToLowerCase(tableName)+", @Param(\"orderColumn\")String orderColumn){").append("\n")
                     .append("    ").append("    ").append("return  generatorQuerySql(CommonConstant.SQL_BASIC_TYPE.SELECT_COLUNM,"+NameTool.firstCharToLowerCase(tableName)+",orderColumn,0,0).toString();").append("\n")
