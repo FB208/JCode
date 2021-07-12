@@ -116,18 +116,33 @@ public class DbApiController {
         FileTool.createDir(tempPath);
         FileTool.createDir(tempPath + "\\entity");
         FileTool.createDir(tempPath + "\\mapper\\sqlProvider");
-        tableNameList.forEach(tableName -> {
+        for(int i=0;i<tableNameList.size();i++)
+        {
+            String tableName = tableNameList.get(i);
             String entity = dbApiService.doEntity(option, dbName, tableName);
             Map<String, String> mapper = dbApiService.doMapper(option, dbName, tableName);
-            try {
-                FileTool.StringBufferWrite(tempPath + "\\entity\\" + tableName + ".java", entity);
-                FileTool.StringBufferWrite(tempPath + "\\mapper\\" + tableName + "Mapper.java", mapper.get("mapper"));
-                FileTool.StringBufferWrite(tempPath + "\\mapper\\sqlProvider\\" + tableName + "MapperSqlProvider.java", mapper.get("sqlProvider"));
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (mapper.get("success").equals("false")) {
+                if (!option.getErrorSkip()) {//判断跳过还是返回错误
+                    resultJson.put("success",mapper.get("success"));
+                    resultJson.put("msg",mapper.get("msg"));
+                    return resultJson;
+                }
             }
-        });
+            else{
+                try {
+                    FileTool.StringBufferWrite(tempPath + "\\entity\\" + tableName + ".java", entity);
+                    FileTool.StringBufferWrite(tempPath + "\\mapper\\" + tableName + "Mapper.java", mapper.get("mapper"));
+                    FileTool.StringBufferWrite(tempPath + "\\mapper\\sqlProvider\\" + tableName + "MapperSqlProvider.java", mapper.get("sqlProvider"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
         ZipTool.generateFile(tempPath, "rar");
+
+
 
         resultJson.put("path","temp/"+uuid+".rar");
 
@@ -147,7 +162,8 @@ public class DbApiController {
         JSONObject resultJson = new JSONObject();
         Map<String, String> result = dbApiService.doMapper(option, dbName, tableName);
 
-
+        resultJson.put("success",result.get("success"));
+        resultJson.put("msg",result.get("msg"));
         resultJson.put("result1", result.get("mapper"));
         resultJson.put("result2", result.get("sqlProvider"));
 

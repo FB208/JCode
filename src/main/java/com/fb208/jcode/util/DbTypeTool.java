@@ -4,6 +4,8 @@ public class DbTypeTool {
     public static String dbtypeTojavaType(String dbType) {
         String javaType = "";
         switch (dbType) {
+            case "text":
+            case "nchar":
             case "nvarchar":
             case "varchar": {
                 javaType = "String";
@@ -11,7 +13,7 @@ public class DbTypeTool {
             break;
             case "tinyint":
             case "smallint": {
-                javaType = "short";
+                javaType = "Short";
             }
             break;
             case "int": {
@@ -35,11 +37,15 @@ public class DbTypeTool {
             break;
             case "numeric":
             case "decimal": {
-                javaType = "BigDecimal";
+                javaType = "Double";//""BigDecimal";
             }
             break;
             case "float": {
                 javaType = "Double";
+            }
+            break;
+            case "image": {
+                javaType = "byte[]";
             }
             break;
             default: {

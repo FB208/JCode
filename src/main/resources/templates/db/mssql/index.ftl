@@ -6,6 +6,8 @@
             padding:20px;
         }
     </style>
+
+
     <div class="panel-group" id="accordion">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -63,6 +65,10 @@
                     <label>
                         <input type="checkbox" id="cb_isSqlProvider" checked> 生成SqlProvider
                     </label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <label>
+                        <input type="checkbox" id="cb_errorSkip" checked> 批量生成遇到错误跳过
+                    </label>
                 </div>
                 <div class="btn-group form-group" role="group" aria-label="..." >
                     <button type="button" class="btn btn-default" onclick="doEntity()">entity</button>
@@ -95,6 +101,19 @@
             </div>
         </div>
     </div>
+    <!--右边抽屉-->
+    <div class="sidebar" id="dowebok">
+        <div class="sidebar-wrapper" id="sidebar-wrapper">
+            <div>
+                <h3>更新日志</h3>
+                <h4>2021.7.10</h4>
+                <ul>
+                    <li>为适应旧版fas优化了数据类型</li>
+                    <li>增加了必要的import，如entity和constant，批量生成不再需要挨个添加，目前仅支持com.haiot.fas包，未开发自定义包功能</li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <script>
         var settings = {
             "url": "",
@@ -104,15 +123,18 @@
                 "Content-Type": "application/json"
             },
             "data": JSON.stringify({
-                "isSqlProvider": "true"
+                "isSqlProvider": "true",
+                "errorSkip":"false"
             }),
         };
         $(function(){
+
         })
         //读取配置文件
         function initOption(){
             var option = {
-                isSqlProvider:$("#cb_isSqlProvider").prop("checked")
+                isSqlProvider:$("#cb_isSqlProvider").prop("checked"),
+                errorSkip:$("#cb_errorSkip").prop("checked")
             }
             return option;
         }
@@ -168,7 +190,14 @@
             settings.url="/dbapi/mssql/batch?dbName="+$("#ipt_db").val();
             settings.data=JSON.stringify(option);
             $.ajax(settings).done(function (response) {
-                alert("请前往此处下载: http://"+window.location.host+"/download?filePath="+response.path);
+                if(response.success=="false")
+                {
+                    alert(response.msg);
+                }
+                else{
+                    alert("请前往此处下载: http://"+window.location.host+"/download?filePath="+response.path);
+                }
+
             });
         }
     </script>

@@ -9,8 +9,31 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
         <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <!-- 抽屉组件 ：https://www.dowebok.com/166.html -->
+        <script src="http://qiniu.bigdudu.cn/js-simpler-sidebar.min.js"></script>
+
+        <style>
+            /*抽屉组件样式*/
+            .sidebar-wrapper {
+                position: relative;
+                height: 100%;
+                overflow: auto;
+                color:white;
+                font-size: 16px;
+                padding:10px;
+            }
+            #btn-help{
+                position: fixed;
+                right: 20px;
+                top: 60px;
+            }
+        </style>
     </head>
     <body>
+    <div id="btn-help">
+        <!-- 打开右边抽屉 -->
+        <svg t="1626058740989" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1696" width="32" height="32"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" p-id="1697"></path><path d="M514.3552 285.9008q-67.584 0-107.52 38.7072-39.936 38.0928-39.936 106.9056h70.0416a100.46464 100.46464 0 0 1 15.36-60.2112q17.19296-25.1904 57.7536-25.1904a66.56 66.56 0 0 1 49.152 17.2032 70.37952 70.37952 0 0 1 0.6144 91.5456l-7.3728 8.6016q-60.23168 53.4528-71.8848 78.0288a131.15392 131.15392 0 0 0-12.288 60.2112v8.6016h70.656v-8.6016a90.4192 90.4192 0 0 1 33.792-70.656q43.008-37.4784 52.8384-48.5376a121.91744 121.91744 0 0 0 22.7328-75.5712 110.88896 110.88896 0 0 0-36.864-88.4736q-36.27008-32.5632-97.0752-32.5632z m-11.0592 354.5088a48.35328 48.35328 0 0 0-33.792 12.9024 47.47264 47.47264 0 0 0 0 66.3552 48.55808 48.55808 0 0 0 33.792 13.5168 47.03232 47.03232 0 0 0 33.792-12.9024 43.64288 43.64288 0 0 0 14.1312-33.792 45.14816 45.14816 0 0 0-13.5168-33.1776 47.84128 47.84128 0 0 0-34.4064-12.9024z" fill="#EBBA50" p-id="1698"></path></svg>
+    </div>
     <div class="container-fluid">
         <div class="row">
             <div class=".col-md-12">
@@ -67,7 +90,20 @@
             </div>
         </div>
     </div>
-
+<script>
+    $(function(){
+        $('#dowebok').simplerSidebar({
+            opener: '#btn-help',
+            sidebar: {
+                align: 'right',
+                width: 350,
+                css:{
+                    backgroundColor:'#101010'
+                }
+            }
+        });
+    })
+</script>
     </body>
     </html>
 </#macro>

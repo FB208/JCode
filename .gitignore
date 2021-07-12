@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+### 临时文件夹 ###
+src/main/resources/temp
