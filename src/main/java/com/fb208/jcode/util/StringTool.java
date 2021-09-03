@@ -11,4 +11,14 @@ public class StringTool {
         return inStr;
     }
 
+    /*
+     * 删除开头字符
+     */
+    public static String trimStart(String inStr, String suffix) {
+        while (inStr.startsWith(suffix)) {
+            inStr = inStr.substring(suffix.length(), inStr.length());
+        }
+        return inStr;
+    }
+
 }

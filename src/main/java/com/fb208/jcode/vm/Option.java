@@ -7,4 +7,5 @@ public class Option {
     Boolean isSqlProvider;
     Boolean errorSkip;
     String namespace;
+    String namespaceSecond;
 }

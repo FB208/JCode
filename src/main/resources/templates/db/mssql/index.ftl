@@ -55,9 +55,19 @@
                 </h4>
             </div>
             <div id="collapseTwo" class="panel-collapse collapse">
-                <div class="form-group">
-                    <label for="ipt_namespace">命名空间</label>
-                    <input id="ipt_namespace" class="form-control form-group" placeholder="com.haiot.jcode"/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ipt_namespace">命名空间</label>
+                            <input id="ipt_namespace" class="form-control form-group" placeholder="com.haiot.jcode"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ipt_namespace_second">二级文件夹(可空)</label>
+                            <input id="ipt_namespace_second" class="form-control form-group" placeholder="适用于多个数据源分成两个子文件夹，如单个数据源可不填"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="ipt_tableName">表</label>
@@ -147,7 +157,8 @@
             var option = {
                 isSqlProvider:$("#cb_isSqlProvider").prop("checked"),
                 errorSkip:$("#cb_errorSkip").prop("checked"),
-                namespace:$("#ipt_namespace").val()
+                namespace:$("#ipt_namespace").val(),
+                namespaceSecond:$("#ipt_namespace_second").val()
             }
             return option;
         }
@@ -197,7 +208,7 @@
                 $("#txt_output2").val(response.result2);
             });
         }
-        //批量生产
+        //批量生成
         function batch(){
             var option = initOption();
             settings.url="/dbapi/mssql/batch?dbName="+$("#ipt_db").val();

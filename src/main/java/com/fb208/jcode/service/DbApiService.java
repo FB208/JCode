@@ -1,5 +1,6 @@
 package com.fb208.jcode.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.fb208.jcode.mapper.DBMapper;
 import com.fb208.jcode.util.DbTypeTool;
@@ -9,6 +10,7 @@ import com.fb208.jcode.vm.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,8 +60,8 @@ public class DbApiService {
         }
         result.append("import org.apache.ibatis.annotations.*; \n").append("\n");
         result.append("import java.util.List; \n").append("\n");
-        result.append("import "+option.getNamespace()+".entity."+tableName+"; \n").append("\n");
-        result.append("import "+option.getNamespace()+".mapper.sqlProvider."+tableName+"MapperSqlProvider; \n").append("\n");
+        result.append("import "+option.getNamespace()+".entity."+ (StrUtil.isBlankIfStr(option.getNamespaceSecond())?"":option.getNamespaceSecond()+".")+tableName+"; \n").append("\n");
+        result.append("import "+option.getNamespace()+".mapper."+ (StrUtil.isBlankIfStr(option.getNamespaceSecond())?"":option.getNamespaceSecond()+".")+"sqlProvider."+tableName+"MapperSqlProvider; \n").append("\n");
         result.append(" @Mapper \n").append(" public interface " + tableName + "Mapper ").append(" { \n");
         //所有字段
         String columns = list.stream().map(m->m.get("ColumnName")).map(String::valueOf).collect(Collectors.joining(","));
@@ -143,8 +145,8 @@ public class DbApiService {
             sqlProvider.append("import cn.hutool.core.util.StrUtil;").append("\n");
             sqlProvider.append("import org.apache.ibatis.annotations.Param;").append("\n");
             sqlProvider.append("import org.apache.ibatis.jdbc.SQL;").append("\n");
-            sqlProvider.append("import "+option.getNamespace()+".CommonConstant;").append("\n");
-            sqlProvider.append("import "+option.getNamespace()+".entity."+tableName+";").append("\n");
+            sqlProvider.append("import "+option.getNamespace()+".constant.CommonConstant;").append("\n");
+            sqlProvider.append("import "+option.getNamespace()+".entity."+ (StrUtil.isBlankIfStr(option.getNamespaceSecond())?"":option.getNamespaceSecond()+".")+tableName+";").append("\n");
             sqlProvider.append("public class "+tableName+"MapperSqlProvider {").append("\n");
             sqlProvider.append("    ").append("public String selectQuery(@Param(\""+NameTool.firstCharToLowerCase(tableName)+"\") "+tableName+" "+NameTool.firstCharToLowerCase(tableName)+", @Param(\"orderColumn\")String orderColumn){").append("\n")
                     .append("    ").append("    ").append("return  generatorQuerySql(CommonConstant.SQL_BASIC_TYPE.SELECT_COLUNM,"+NameTool.firstCharToLowerCase(tableName)+",orderColumn,0,0).toString();").append("\n")
