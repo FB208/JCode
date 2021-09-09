@@ -1,23 +1,18 @@
 package com.fb208.jcode.controller;
 
-import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fb208.jcode.db.DbHelper;
-import com.fb208.jcode.mapper.DBMapper;
+import com.fb208.jcode.mapper.MsSqlServerMapper;
 import com.fb208.jcode.service.DbApiService;
 import com.fb208.jcode.service.JdbcService;
 import com.fb208.jcode.util.*;
 import com.fb208.jcode.vm.Option;
 import com.fb208.jcode.vm.localJsondb.ConnectionString;
-import com.zaxxer.hikari.HikariDataSource;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -25,15 +20,15 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/dbapi")
-public class DbApiController {
+@RequestMapping(value = "/mssql")
+public class MsSqlServerApiController {
 
     @Value("${jcode.filepath.resources}")
     String resourcePath;
 
 
     @Autowired
-    DBMapper dbMapper;
+    MsSqlServerMapper msSqlServerMapper;
     @Autowired
     JdbcService jdbcService;
     @Autowired
@@ -46,7 +41,7 @@ public class DbApiController {
      * @param conn
      * @return
      */
-    @PostMapping(value = "/mssql/conn")
+    @PostMapping(value = "/conn")
     public JSONObject mssqlConn(@RequestBody Option option, String conn) {
         String path = resourcePath + "\\localJsondb\\connectionString.json";
         String jsonStr = JsonFileTool.getDatafromFile(path);
@@ -57,7 +52,7 @@ public class DbApiController {
                 dblist.stream().filter(m -> m.getServerName().equals(conn)).findFirst().get();
         jdbcService.init(selectConn);
         JdbcTemplate jdbcTemplate = jdbcService.getJdbcTemplate();
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(dbMapper.selectDbName());
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(msSqlServerMapper.selectDbName());
         List<String> dbList = list.stream().map(m -> m.get("Name")).map(String::valueOf).collect(Collectors.toList());
         JSONObject resultJson = new JSONObject();
         resultJson.put("result1", dbList);
@@ -71,10 +66,10 @@ public class DbApiController {
      * @param dbName
      * @return
      */
-    @PostMapping(value = "/mssql/openDb")
+    @PostMapping(value = "/openDb")
     public JSONObject mssqlOpenDb(@RequestBody Option option, String dbName) {
         JdbcTemplate jdbcTemplate = jdbcService.getJdbcTemplate();
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(dbMapper.selectTableName(dbName));
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(msSqlServerMapper.selectTableName(dbName));
         List<String> tableNameList =
                 list.stream().map(m -> m.get("name")).map(String::valueOf).collect(Collectors.toList());
         JSONObject resultJson = new JSONObject();
@@ -88,7 +83,7 @@ public class DbApiController {
      * @param tableName
      * @return
      */
-    @PostMapping(value = "/mssql/doEntity")
+    @PostMapping(value = "/doEntity")
     public JSONObject mssqlDoEntity(@RequestBody Option option, String dbName, String tableName) {
         JSONObject resultJson = new JSONObject();
         String result = dbApiService.doEntity(option, dbName, tableName);
@@ -103,11 +98,11 @@ public class DbApiController {
      * @param dbName
      * @return
      */
-    @PostMapping(value = "/mssql/batch")
+    @PostMapping(value = "/batch")
     public JSONObject mssqlBatch(@RequestBody Option option, String dbName) throws Exception {
         JSONObject resultJson = new JSONObject();
         JdbcTemplate jdbcTemplate = jdbcService.getJdbcTemplate();
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(dbMapper.selectTableName(dbName));
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(msSqlServerMapper.selectTableName(dbName));
         List<String> tableNameList =
                 list.stream().map(m -> m.get("name")).map(String::valueOf).collect(Collectors.toList());
         String uuid = UUID.randomUUID().toString();
@@ -155,7 +150,7 @@ public class DbApiController {
      * @param tableName
      * @return
      */
-    @PostMapping(value = "/mssql/doMapper")
+    @PostMapping(value = "/doMapper")
     @ResponseBody
     public JSONObject mssqlDoMapper(@RequestBody Option option, String dbName, String tableName) {
 

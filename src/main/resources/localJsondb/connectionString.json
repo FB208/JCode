@@ -36,5 +36,15 @@
       "Password": "Yang123!@#",
       "IsUse": false
     }
-  ]
+  ],
+  "mysql": [
+    {
+      "ServerName": "dev_fas4",
+      "ServerType": "MySql",
+      "Url": "jdbc:mysql://39.98.138.165:3306/fas4?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC",
+      "Driver": "com.mysql.cj.jdbc.Driver",
+      "UserName": "root",
+      "Password": "QingHong123!@#",
+      "IsUse": true
+    }]
 }

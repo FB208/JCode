@@ -105,15 +105,16 @@
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion"
                        href="#collapseThree">
-                        点击我进行展开，再次点击我进行折叠。第 3 部分
+                        其他工具
                     </a>
                 </h4>
             </div>
             <div id="collapseThree" class="panel-collapse collapse">
                 <div class="panel-body">
-                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                    cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-                    vice lomo.
+                    <button type="button" class="btn btn-default" onclick="PiLiangPeiZhiMoRenZiDuan()">批量配置默认字段</button>
+                    <div class="form-group">
+                        <textarea class="form-control" id="txt_output1" rows="16"></textarea>
+                    </div>
                 </div>
             </div>
         </div>
@@ -123,18 +124,10 @@
         <div class="sidebar-wrapper" id="sidebar-wrapper">
             <div>
                 <h3>更新日志</h3>
-                <h4>2021.7.10</h4>
-                <ul>
-                    <li>为适应旧版fas优化了数据类型</li>
-                    <li>增加了必要的import，如entity和constant，批量生成不再需要挨个添加，目前仅支持com.haiot.fas包，未开发自定义包功能</li>
-                </ul>
-                <h4>2021.7.12</h4>
-                <ul>
-                    <li>现在可以自定义namespace</li>
-                </ul>
                 <h4>2021.9.3</h4>
                 <ul>
-                    <li>新增了二级文件夹的配置，以适应多个数据源的情况</li>
+                    <li>从mssql复制来的页面，功能暂不能用</li>
+                    <li>其他工具中“批量配置默认字段”可用</li>
                 </ul>
             </div>
         </div>
@@ -169,7 +162,7 @@
         //链接数据库
         function conn(){
             var option = initOption();
-            settings.url="/mssql/conn?conn="+$("#ipt_connStr").val();
+            settings.url="/mysql/conn?conn="+$("#ipt_connStr").val();
             settings.data=JSON.stringify(option);
             $.ajax(settings).done(function (response) {
                 console.log(response.result1);
@@ -181,7 +174,7 @@
         //打开数据库
         function openDb(){
             var option = initOption();
-            settings.url="/mssql/openDb?dbName="+$("#ipt_db").val();
+            settings.url="/dbapi/mssql/openDb?dbName="+$("#ipt_db").val();
             settings.data=JSON.stringify(option);
             $.ajax(settings).done(function (response) {
                 $("#slt_tableName").empty();
@@ -194,7 +187,7 @@
         //生成实体
         function doEntity(){
             var option = initOption();
-            settings.url="/mssql/doEntity?dbName="+$("#ipt_db").val()+"&tableName="+$("#ipt_tableName").val();
+            settings.url="/dbapi/mssql/doEntity?dbName="+$("#ipt_db").val()+"&tableName="+$("#ipt_tableName").val();
             settings.data=JSON.stringify(option);
             $.ajax(settings).done(function (response) {
                 $("#txt_output1").val(response.result1);
@@ -205,7 +198,7 @@
         //生成mapper
         function doMapper(){
             var option = initOption();
-            settings.url="/mssql/doMapper?dbName="+$("#ipt_db").val()+"&tableName="+$("#ipt_tableName").val();
+            settings.url="/dbapi/mssql/doMapper?dbName="+$("#ipt_db").val()+"&tableName="+$("#ipt_tableName").val();
             settings.data=JSON.stringify(option);
             $.ajax(settings).done(function (response) {
                 $("#txt_output1").val(response.result1);
@@ -215,7 +208,7 @@
         //批量生成
         function batch(){
             var option = initOption();
-            settings.url="/mssql/batch?dbName="+$("#ipt_db").val();
+            settings.url="/dbapi/mssql/batch?dbName="+$("#ipt_db").val();
             settings.data=JSON.stringify(option);
             $.ajax(settings).done(function (response) {
                 if(response.success=="false")
@@ -227,6 +220,12 @@
                 }
 
             });
+        }
+
+        function PiLiangPeiZhiMoRenZiDuan(){
+            var option = initOption();
+            settings.url="/dbapi/mssql/batch?dbName="+$("#ipt_db").val();
+            settings.data=JSON.stringify(option);
         }
     </script>
 </@layout>

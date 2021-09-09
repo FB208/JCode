@@ -1,8 +1,7 @@
 package com.fb208.jcode.service;
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
-import com.fb208.jcode.mapper.DBMapper;
+import com.fb208.jcode.mapper.MsSqlServerMapper;
 import com.fb208.jcode.util.DbTypeTool;
 import com.fb208.jcode.util.NameTool;
 import com.fb208.jcode.util.StringTool;
@@ -10,7 +9,6 @@ import com.fb208.jcode.vm.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,14 +20,16 @@ public class DbApiService {
     @Autowired
     JdbcService jdbcService;
     @Autowired
-    DBMapper dbMapper;
+    MsSqlServerMapper msSqlServerMapper;
+
+
 
     public String doEntity(Option option, String dbName, String tableName) {
         JdbcTemplate jdbcTemplate = jdbcService.getJdbcTemplate();
         StringBuilder result = new StringBuilder();
 
 
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(dbMapper.selectTableColumn(dbName, tableName));
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(msSqlServerMapper.selectTableColumn(dbName, tableName));
         result.append("import lombok.Data; \n").append("import java.util.Date; \n").append("\n");
         result.append(" @Data \n").append(" public class " + tableName + " \n").append(" { \n");
         list.forEach(item -> {
@@ -49,7 +49,7 @@ public class DbApiService {
         JdbcTemplate jdbcTemplate = jdbcService.getJdbcTemplate();
         StringBuilder result = new StringBuilder();
         StringBuilder sqlProvider = new StringBuilder();
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(dbMapper.selectTableColumn(dbName,tableName));
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(msSqlServerMapper.selectTableColumn(dbName,tableName));
         //异常校验
         long pkCount = list.stream().filter(m->m.get("IsPK").equals("1")).count();
         if(pkCount!=1)
@@ -189,8 +189,15 @@ public class DbApiService {
                     //其他类型的判断
                     sqlProvider.append("    ").append("    ").append("    ").append("if ("+NameTool.firstCharToLowerCase(tableName)+".get"+NameTool.firstCharToUpperCase(NameTool.lineToHump(list.get(i).get("ColumnName").toString()))+"() != null) {").append("\n");
                 }
+                if (list.get(i).get("Remark").toString().indexOf("_like")>-1) {
+                    //备注中带_like，表示模糊查询
+                    sqlProvider.append("    ").append("    ").append("    ").append("    ").append("WHERE(\""+list.get(i).get("ColumnName")+" like concat('%',#{"+NameTool.firstCharToLowerCase(tableName)+"."+NameTool.lineToHump(list.get(i).get("ColumnName").toString())+"},'%')\");").append("\n");
+                }
+                else{
+                    //普通查询
+                    sqlProvider.append("    ").append("    ").append("    ").append("    ").append("WHERE(\""+list.get(i).get("ColumnName")+" = #{"+NameTool.firstCharToLowerCase(tableName)+"."+NameTool.lineToHump(list.get(i).get("ColumnName").toString())+"}\");").append("\n");
+                }
 
-                sqlProvider.append("    ").append("    ").append("    ").append("    ").append("WHERE(\""+list.get(i).get("ColumnName")+" = #{"+NameTool.firstCharToLowerCase(tableName)+"."+NameTool.lineToHump(list.get(i).get("ColumnName").toString())+"}\");").append("\n");
                 sqlProvider.append("    ").append("    ").append("    ").append("}").append("\n");
             }
             sqlProvider.append("    ").append("    ").append("}};").append("\n");

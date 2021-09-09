@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DBMapper {
+public class MsSqlServerMapper {
     public String selectDbName(){
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT Name FROM Master..SysDatabases ORDER BY Name");
