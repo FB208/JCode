@@ -129,6 +129,10 @@
                     <li>从mssql复制来的页面，功能暂不能用</li>
                     <li>其他工具中“批量配置默认字段”可用</li>
                 </ul>
+                <h4>2021.12.7</h4>
+                <ul>
+                    <li>现在可以生成mysql的entity了</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -174,7 +178,7 @@
         //打开数据库
         function openDb(){
             var option = initOption();
-            settings.url="/dbapi/mssql/openDb?dbName="+$("#ipt_db").val();
+            settings.url="/mysql/openDb?dbName="+$("#ipt_db").val();
             settings.data=JSON.stringify(option);
             $.ajax(settings).done(function (response) {
                 $("#slt_tableName").empty();
@@ -187,7 +191,7 @@
         //生成实体
         function doEntity(){
             var option = initOption();
-            settings.url="/dbapi/mssql/doEntity?dbName="+$("#ipt_db").val()+"&tableName="+$("#ipt_tableName").val();
+            settings.url="/mysql/doEntity?dbName="+$("#ipt_db").val()+"&tableName="+$("#ipt_tableName").val();
             settings.data=JSON.stringify(option);
             $.ajax(settings).done(function (response) {
                 $("#txt_output1").val(response.result1);

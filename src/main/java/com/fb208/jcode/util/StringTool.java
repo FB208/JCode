@@ -20,5 +20,4 @@ public class StringTool {
         }
         return inStr;
     }
-
 }

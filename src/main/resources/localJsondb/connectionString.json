@@ -45,6 +45,15 @@
       "Driver": "com.mysql.cj.jdbc.Driver",
       "UserName": "root",
       "Password": "QingHong123!@#",
+      "IsUse": false
+    },
+    {
+      "ServerName": "nh_fas3",
+      "ServerType": "MySql",
+      "Url": "jdbc:mysql://47.92.195.156:3306/fas4?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC",
+      "Driver": "com.mysql.jdbc.Driver",
+      "UserName": "root",
+      "Password": "root123",
       "IsUse": true
     }]
 }
