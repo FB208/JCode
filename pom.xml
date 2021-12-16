@@ -117,6 +117,12 @@
             <artifactId>ant</artifactId>
             <version>1.10.5</version>
         </dependency>
+<!--    修改已经编译好的java代码    -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.25.0-GA</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
