@@ -55,5 +55,23 @@
       "UserName": "root",
       "Password": "root123",
       "IsUse": true
+    },
+    {
+      "ServerName": "xwx",
+      "ServerType": "MySql",
+      "Url": "jdbc:mysql://125.37.5.122:3306/eas?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC",
+      "Driver": "com.mysql.jdbc.Driver",
+      "UserName": "root",
+      "Password": "Gf2jC24k",
+      "IsUse": true
+    },
+    {
+      "ServerName": "emHaiot",
+      "ServerType": "MySql",
+      "Url": "jdbc:mysql://125.37.5.123:3306/emHaiot?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC",
+      "Driver": "com.mysql.jdbc.Driver",
+      "UserName": "root",
+      "Password": "xwx123!@#",
+      "IsUse": true
     }]
 }

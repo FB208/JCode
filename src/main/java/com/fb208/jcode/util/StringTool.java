@@ -20,4 +20,11 @@ public class StringTool {
         }
         return inStr;
     }
+
+    public static String clearChar(String inStr, String... suffix) {
+        for (int i = 0; i < suffix.length; i++) {
+            inStr = inStr.replace(suffix[i], "");
+        }
+        return inStr;
+    }
 }

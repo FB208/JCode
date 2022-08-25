@@ -1,5 +1,5 @@
 server:
-  port: 8887
+  port: 8886
 
 spring:
   application:
@@ -44,4 +44,5 @@ spring:
 jcode:
   filepath:
     resources: D:\CodeSpace\JCode\src\main\resources
+
 

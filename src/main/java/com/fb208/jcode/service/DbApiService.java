@@ -124,6 +124,9 @@ public class DbApiService {
         result.append("    ").append("@Select(\"select "+columns+" from ["+tableName+"] where "+columnPK+" = "+columnPK_sharp+"\")").append("\n")
                 .append("    ").append(tableName).append(" ").append("selectOne(@Param(\""+NameTool.lineToHump(columnPK)+"\")"+typePK+" "+NameTool.lineToHump(columnPK)+");");
         result.append("\n\n");
+        result.append("    ").append("@Select(\"select "+columns+" from ["+tableName+"] with(nolock) where "+columnPK+" = "+columnPK_sharp+"\")").append("\n")
+                .append("    ").append(tableName).append(" ").append("selectOneNoLock(@Param(\""+NameTool.lineToHump(columnPK)+"\")"+typePK+" "+NameTool.lineToHump(columnPK)+");");
+        result.append("\n\n");
 
         //判断是否要加SqlProvider
         if (option.getIsSqlProvider()) {
