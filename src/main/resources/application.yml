@@ -43,6 +43,6 @@ spring:
 
 jcode:
   filepath:
-    resources: D:\CodeSpace\JCode\src\main\resources
+    resources: D:\个人项目\jcode\src\main\resources
 
 
